@@ -36,8 +36,7 @@ const App = () => {
     return post.map((pst) => (
       <ul key={pst.id}>
         <li>
-          <b>{pst.title}</b>
-          <br />
+          <h4>{pst.title}</h4>
           <br />
           {pst.body}
         </li>
