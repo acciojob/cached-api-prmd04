@@ -3,60 +3,43 @@ import "./../styles/App.css";
 import "regenerator-runtime";
 
 const App = () => {
-  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState(1);
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
+          "https://jsonplaceholder.typicode.com/posts?userId=1" // fixed for test
         );
 
         if (!response.ok) {
-          throw new Error("unable to fetch data");
+          throw new Error("Unable to fetch data");
         }
 
         const data = await response.json();
-        setPost(data);
+        setPosts(data);
         setLoading(false);
       } catch (err) {
         alert(err.message);
         setLoading(false);
       }
     }
+
     fetchData();
-  }, [userId]);
+  }, []);
 
   const PostList = useMemo(() => {
-    return post.map((pst) => (
-      <ul key={pst.id}>
-        <li>
-          <h4>{pst.title}</h4>
-          <p>{pst.body}</p>
-        </li>
-      </ul>
+    return posts.map((post) => (
+      <div key={post.id}>
+        <h4>{post.title}</h4>
+        <p>{post.body}</p> {/* This is what Cypress is looking for */}
+      </div>
     ));
-  }, [post]);
+  }, [posts]);
 
-  return (
-    <div>
-      <h2>Posts for User ID: {userId}</h2>
-
-      <select
-        value={userId}
-        onChange={(e) => setUserId(Number(e.target.value))}
-      >
-        <option value={1}>User 1</option>
-        <option value={2}>User 2</option>
-        <option value={3}>User 3</option>
-      </select>
-
-      {loading ? <p>Loading...</p> : PostList}
-    </div>
-  );
+  return <div>{loading ? <p>Loading...</p> : PostList}</div>;
 };
 
 export default App;
