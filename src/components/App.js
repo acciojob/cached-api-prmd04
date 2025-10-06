@@ -37,8 +37,7 @@ const App = () => {
       <ul key={pst.id}>
         <li>
           <h4>{pst.title}</h4>
-          <br />
-          {pst.body}
+          <p>{pst.body}</p>
         </li>
       </ul>
     ));
